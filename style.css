@@ -63,6 +63,22 @@ nav {
 main {
   display: flex;
   flex-wrap: wrap;
-  padding: 20px 20px 100px 20px;
-  min-height: 300px;
+  padding: 20px 20px 400px 20px;
+  min-height: 400px;
+  background-color: #F2F2F2;
+}
+
+
+
+ooter {
+  background-color: #333;
+  color: white;
+}
+
+footer .copyright {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;;
+  padding-right: 25px;
+  font-weight: 200;
 }
