@@ -89,3 +89,25 @@ footer .copyright {
   padding-right: 25px;
   font-weight: 200;
 }
+
+.add-recipe {
+  position: relative;
+  margin: auto;
+  width: 80%;
+  padding: 20px;
+  border: 3px solid #333;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.recipe-header {
+  margin-top: -20px;
+}
+
+.add-btn {
+  margin-top: 20px;
+}
+
+.add-ingredient {
+  margin-top: 20px;
+}

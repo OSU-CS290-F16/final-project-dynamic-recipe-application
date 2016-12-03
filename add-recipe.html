@@ -9,6 +9,10 @@
   <!-- This is a 3rd-party stylesheet for Font Awesome: http://fontawesome.io/ -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" media="screen">
 
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
   <link rel="stylesheet" href="style.css" media="screen">
 
 </head>
@@ -31,6 +35,58 @@
   </header>
 
   <main>
+    <div class="add-recipe">
+      <div class="recipe-header">
+        <h2>New Recipe</h2>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Recipe Name</span>
+            <input type="text" class="form-control" placeholder="ex. Cookies" aria-describedby="basic-addon1">
+          </div>
+          <!-- /input-group -->
+        </div>
+      </div>
+      <div class="row add-ingredient">
+        <div class="col-lg-6">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Ingredient</span>
+            <input type="text" class="form-control" placeholder="ex. flour" aria-describedby="basic-addon1">
+          </div>
+          <!-- /input-group -->
+        </div>
+        <div class="col-lg-6">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Amount</span>
+            <input type="text" class="form-control" placeholder="ex. 5" aria-describedby="basic-addon1" aria-label="...">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Units <span class="caret"></span></button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a>Cups</a></li>
+                <li><a>Another action</a></li>
+                <li><a>Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a>Separated link</a></li>
+              </ul>
+            </div>
+            <!-- /btn-group -->
+          </div>
+          <!-- /input-group -->
+        </div>
+        <!-- /.col-lg-6 -->
+      </div>
+      <!-- /.row -->
+      <div>
+        <button type="button" class="add-btn btn btn-primary" aria-label="Left Align">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          Add Ingredient
+        </button>
+      </div>
+
+
+    </div>
+
 
   </main>
 
@@ -42,6 +98,10 @@
 
 </body>
 
+
+<script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="index.js"></script>
 
 </html>
