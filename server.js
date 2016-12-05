@@ -8,50 +8,297 @@ const mysqlx = require('@mysql/xdevapi');
 const url = require('url');
 const path = require('path');
 
-const templates = {
-	"404": `
-<html>
-	<head><title>404 - Not found</title></head>
-	<body>
-		<h1>The file you were looking for wasn't found, sorry.</h1>
-	</body>
-</html>
-`
-}
+// Where we will store our connection to MySQL
+let dbSession, schema;
+
+// Setup the tables
+const tables = {};
 
 // Store any session information in the form:
 //   (session key): {session data}
 const sessions = {};
 
+// Handy dandy little session functions
+function userData(request) {
+	let cookies = parseCookies(request);
+	if (cookies && sessions.keys().includes(cookie["session"])) {
+		return sessions[cookie["session"]];
+	} else {
+		return false;
+	}
+}
+function isLoggedIn(request) {
+	userData() ? true : false;
+}
+function parseCookies(request) {
+	if (Object.keys(request.headers).map(key => key.toLowerCase()).includes('cookie')) {
+		let cookiesText = request.headers[Object.keys(request.headers).find(item => item.toLowerCase() == "cookie")];
+		let cookies = {};
+		console.log(cookiesText);
+		cookiesText.split(';').forEach(cookieText => {
+			console.log(cookieText);
+			let [cookieName, cookieValue] = cookieText.split('=');
+			cookies[decodeURIComponent(cookieName)] = decodeURIComponent(cookieValue);
+		});
+		return cookies;
+	} else {
+		return false;
+	}
+}
+function loggoutUser(request, res) {
+	let cookies = parseCookies(request);
+	if (cookies && cookies.session) {
+		delete sessions[cookies.session];
+	}
+}
+function loginUser(req, res) {
+	return new Promise((resolve, reject) => {
+		getPostData(req, postData => {
+			if (postData.email) {
+				tables["users"].select(['userid', 'email', 'password', 'pass_salt']).where(`email = ${postData}`).execute().then(result => {
+					console.log(result);
+				});
+			} else {
+				loginDocument(res, "No Email Entered.")
+			}
+		});
+	});
+}
+
+
 // Port to listen on
 const PORT = process.env.port || 80;
+
+// Handle displaying common errors.
+function errorDocument(response, error) {
+	switch(error) {
+		case 404:
+		default:
+		response.writeHead(404, "Not Foud", {});
+		response.end(
+`<html>
+	<head>
+		<title>404 - Not found</title>
+	</head>
+	<body>
+	<h1>The file you were looking for wasn't found, sorry.</h1>
+	</body>
+</html>`
+		);
+	}
+}
+// Create a login page
+function loginDocument(response, error = false) {
+	if (error) {
+		response.writeHead(403, error, {});
+	} else {
+		response.writeHead(200, 'All good', {})
+	}
+	response.end(
+`<html>
+	<head>
+		<title>Recipe Box - Login</title>
+	</head>
+	<body>
+		<form action="/login/" method="post">
+			${ error ? '<p>' + error + '</p>' : ''}
+			<h2>Login:</h2>
+			<label>Email: <input name="email" type="text" /></label>
+			<label>Password: <input name="password" type="password" /></label>
+			<input type="submit" value="Login" />
+		</form>
+	</body>
+</html>`
+	);
+}
+
+// Helper to read a stream into a string
+function stream2str(stream, callback) {
+	let str = "";
+	stream.on('data', (chunk) => {
+		str += chunk;
+	});
+	stream.on('end', () => {
+		callback(str);
+	});
+}
+
+// Function to get HTTP POST data out of a request
+function getPostData(req, callback) {
+	stream2str(req, str => {
+		let entries = str.split('&');
+		let data = {};
+		entries.forEach(entry => {
+			let [key, value] = entry.split('=');
+			key = decodeURIComponent(key);
+			value = decodeURIComponent(value);
+			data[key] = value;
+		});
+		callback(data);
+	});
+}
+
+// This is a bit like Express routing, except that it has no dependencies.
+// The order here matters.
+let patterns = [
+	{
+		// Static Files
+		methods: ["get"],
+		regex: [
+			/(\/static\/)(.+)*/,
+			/(\/js\/)(.+)*/,
+			/(\/css\/)(.+)*/,
+		],
+		handler: function(req, res, params) {
+			let [match, folder, file] = params;
+			// path.normalize will hopefully make it so that people can't request files outside of the static directories.
+			let fileAbsolute = process.cwd() + path.normalize(folder + file);
+			if (fs.existsSync(fileAbsolute)) {
+				let fileHandle = fs.createReadStream(fileAbsolute);
+				fileHandle.on('open', () => {
+					fileHandle.pipe(res);
+				});
+			} else {
+				errorDocument(res, 404);
+			}
+		}
+	},
+	{
+		// Recipe pages
+		methods: ["get"],
+		regex: [
+			/\/recipes\/(.+)*/
+		],
+		handler: function(req, res, params) {
+
+		}
+	},
+	{
+		// Rest Api endpoint
+		methods: ["get", "post", "put", "delete"],
+		regex: [
+			/\/api\/recipes\/(.+)/ // No camptures because we will be parsing it ourselves in the handler.
+		],
+		handler: function(req, res, params) {
+			// Decrease the number of toLowerCase() statements
+			req.method = req.method.toLowerCase();
+
+			if (req.method == "get") {
+
+			} else if (req.method == "post") {
+
+			} else if (req.method == "put") {
+
+			} else { // Method = delete
+
+			}
+		}
+	},
+	{
+		// Login Page
+		// methods: ["post", "get"],
+		regex: [
+			/\/login\//
+		],
+		handler: function(req, res, params) {
+			let reqUrl = url.parse(req.url, true); // true=Parse query parameters
+			if (reqUrl.query["logout"]) {
+				sessionLogout(req);
+			} else if (req.method.toLowerCase() == "post") {
+				loginUser(req, res);
+			} else {
+				loginDocument(res);
+			}
+		}
+	},
+	{
+		// Main Application Page
+		methods: ["get"],
+		regex: [
+			/\//
+		],
+		handler: function(req, res, params) {
+			res.writeHead(200, "We're good", {});
+			res.end(
+`
+<h1>We all good!</h1>
+`
+			);
+		}
+	}
+];
 
 // Create our server.
 let server = new http.Server();
 server.on('request', (req, res) => {
-	// Handle all of the url patterns and paramaters
-	//  - Static folders
-	let staticFiles = /(\/static\/.+)|(\/js\/.+)|(\/css\/.+)/g;
-	let file = false;
-	if (req.method.toUpperCase() == "GET" && (file = url.parse(req.url).pathname.match(staticFiles))) {
-		file = file[0];
-		// path.normalize will hopefully make it so that people can't request files outside of the static directories.
-		let fileAbsolute = process.cwd() + path.normalize(file);
-		if (fs.existsSync(fileAbsolute)) {
-			let fileHandle = fs.createReadStream(fileAbsolute);
-			fileHandle.on('open', () => {
-				fileHandle.pipe(res);
-			});
-		} else {
-			res.writeHead(404, "Not Found", {});
-			res.end(templates["404"])
+
+	let reqUrl = url.parse(req.url);
+
+	console.log(`New Request for ${req.url}`);
+
+	for (let endpoint of patterns) {
+		// skip if the method isn't correct
+		if (endpoint.methods && !endpoint.methods.some(method => {
+			return method.toLowerCase() == req.method.toLowerCase();
+		})) {
+			continue;
 		}
-	} else {
-		res.writeHead(404, "Not Found", {});
-		res.end(templates["404"])
+
+		let params = false;
+		for (let expr of endpoint.regex) {
+			if ((params = expr.exec(reqUrl.pathname))) {
+				console.log(` - Using ${expr} to handle it.`);
+				break;
+			}
+		}
+		if (params) {
+			endpoint.handler(req, res, params);
+			return;
+		}
 	}
+	// If no handler is found, then we will use our default
+	console.error(`Url ${req.url} and method ${req.method} doesn't have a route handler`);
+	errorDocument(res, 404);
 });
 
-
 // Activate the server
-server.listen(PORT)
+mysqlx.getSession({
+	host: "localhost",
+	port: 33060,
+	dbUser: "cs290fp",
+	dbPassword: "javascript"
+}).then( input => {
+	dbSession = input; // This may not need to be global.  I'm not sure yet.
+
+	console.log("Connected to the database sucessfully.")
+
+	// Get the schema
+	// Schema probably doesn't need to be global either.
+	schema = dbSession.getSchema('cs290fp');
+	schema.existsInDatabase().then((schemaIn) => {
+		if (!schemaIn) {
+			console.error(new Error("The cs290fp schema wasn't found in the database.  Have you run the db_setup.sql file sucessfully?"));
+		} else {
+			console.log("Schema appears in database, so chances are that the db_setup.sql file has been run.")
+			// Setup the tables
+			let tableNames = ["conversions", "ingredient_meta", "ingredients", "recipes", "units", "users"];
+			let tablePromises = tableNames.map(key => {
+				tables[key] = schema.getTable(key);
+				return tables[key].existsInDatabase();
+			});
+			Promise.all(tablePromises).then(tableIn => {
+				if (!tableIn) {
+					console.error(new Error("At least one required table wasn't in the database.  Have you run the db_setup.sql file sucessfully?"));
+				} else {
+					// We are all good.
+					console.log("All tables found in the database. db_setup.sql probably ran successfully.");
+
+					console.log("Server listening on port: " + PORT);
+					server.listen(PORT);
+				}
+			});
+		}
+	});
+}).catch( error => {
+	console.error(error);
+})
