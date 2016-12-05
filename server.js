@@ -157,7 +157,15 @@ function indexDocument(response, error = false){
   <main>
 
 
-
+    `var collection = db.collection('recipies');
+     var cursor = collection.find({ _id:* });
+     cursor.each(function(err, doc){
+          if(err){
+				   
+	  }
+     }); 
+				   
+     `
     <div class="Recipe">
       <h1>Recipe Name</h1>
       <p>
