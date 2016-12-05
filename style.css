@@ -111,3 +111,16 @@ footer .copyright {
 .add-ingredient {
   margin-top: 20px;
 }
+
+.btn-steelblue {
+  background-color: SteelBlue;
+  color: #fff;
+}
+
+#addIngredient {
+  padding-top: 10px;
+}
+
+.newRowSpace {
+  padding-bottom: 10px;
+}

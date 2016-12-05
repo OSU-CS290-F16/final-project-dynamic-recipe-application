@@ -48,39 +48,46 @@
           <!-- /input-group -->
         </div>
       </div>
-      <div class="row add-ingredient">
-        <div class="col-lg-6">
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">Ingredient</span>
-            <input type="text" class="form-control" placeholder="ex. flour" aria-describedby="basic-addon1">
-          </div>
-          <!-- /input-group -->
-        </div>
-        <div class="col-lg-6">
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">Amount</span>
-            <input type="text" class="form-control" placeholder="ex. 5" aria-describedby="basic-addon1" aria-label="...">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Units <span class="caret"></span></button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li><a>Cups</a></li>
-                <li><a>Another action</a></li>
-                <li><a>Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a>Separated link</a></li>
-              </ul>
+      <div id="addIngredient">
+        <div class="row newRowSpace">
+          <div class="col-lg-6">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">Ingredient</span>
+              <input type="text" class="form-control" placeholder="ex. flour" aria-describedby="basic-addon1">
             </div>
-            <!-- /btn-group -->
+            <!-- /input-group -->
           </div>
-          <!-- /input-group -->
+          <div class="col-lg-6">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">Amount</span>
+              <input type="text" class="form-control" placeholder="ex. 5" aria-describedby="basic-addon1" aria-label="...">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Units <span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a>Cups</a></li>
+                  <li><a>Another action</a></li>
+                  <li><a>Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a>Separated link</a></li>
+                </ul>
+              </div>
+              <!-- /btn-group -->
+            </div>
+            <!-- /input-group -->
+          </div>
+          <!-- /.col-lg-6 -->
         </div>
-        <!-- /.col-lg-6 -->
       </div>
+
       <!-- /.row -->
       <div>
-        <button type="button" class="add-btn btn btn-primary" aria-label="Left Align">
+        <button type="button" id="addButton" class="add-btn btn btn-steelblue" aria-label="Left Align">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
           Add Ingredient
+        </button>
+        <button type="button" id="submitButton" class="add-btn btn btn-success" aria-label="Left Align">
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          Submit
         </button>
       </div>
 
