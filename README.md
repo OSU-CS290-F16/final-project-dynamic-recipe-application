@@ -7,10 +7,10 @@ CS 290 Fall 2016
 Rob Hess
 
 ## Students:
-### Zachary Iverson
-### Kevin 
+### Kevin Stine
 ### Sean Caster
 ### Evan Brass
+### Zachary Iverson
 
 ##### Description: 
 
