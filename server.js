@@ -95,6 +95,7 @@ function loginDocument(response, error = false) {
 		response.writeHead(200, 'All good', {});
 	}
 	response.end(
+		//collection called recipes
 `<html>
 	<head>
 		<title>Recipe Box - Login</title>
