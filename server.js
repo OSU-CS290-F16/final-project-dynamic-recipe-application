@@ -117,7 +117,7 @@ function indexDocument(response, error = false){
 	} else {
 		response.writeHead(200, 'All good', {});
 	}
-	response.end{
+	response.end(
 	'<html>
 
 <head>
@@ -196,7 +196,7 @@ function indexDocument(response, error = false){
 <script src="index.js"></script>
 
 </html>'
-	}
+	);
 }
 // Helper to read a stream into a string
 function stream2str(stream, callback) {
