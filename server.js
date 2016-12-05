@@ -92,7 +92,7 @@ function loginDocument(response, error = false) {
 	if (error) {
 		response.writeHead(403, error, {});
 	} else {
-		response.writeHead(200, 'All good', {})
+		response.writeHead(200, 'All good', {});
 	}
 	response.end(
 `<html>
@@ -111,7 +111,93 @@ function loginDocument(response, error = false) {
 </html>`
 	);
 }
+function indexDocument(response, error = false){
+	if(error){
+		response.writeHead(403, error, {});	
+	} else {
+		response.writeHead(200, 'All good', {});
+	}
+	response.end{
+	'<html>
 
+<head>
+
+  <meta charset="utf-8">
+  <title>Dynamic Recipe Application</title>
+
+  <!-- This is a 3rd-party stylesheet for Font Awesome: http://fontawesome.io/ -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" media="screen">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+  <link rel="stylesheet" href="style.css" media="screen">
+
+</head>
+
+<body>
+
+  <header>
+
+    <!-- The <i> tag below includes the sticky note icon from Font Awesome -->
+    <h1><a href="/"><i class="Header"></i> Dynamic Recipe Application</a></h1>
+
+    <nav>
+      <ul class="navbar-list">
+        <li class="navbar-item"><a href="index.html">Home</a></li>
+        <li class="navbar-item"><a href="add-recipe.html">Add Recipe</a></li>
+        <li class="navbar-item navbar-right"><a href="#">Maybe Something else</a></li>
+      </ul>
+    </nav>
+
+  </header>
+
+  <main>
+
+
+
+    <div class="Recipe">
+      <h1>Recipe Name</h1>
+      <p>
+        Ingrediant Number 1
+      </p>
+      <p>
+        Ingrediant Numbe 2
+      </p>
+      <p>
+        AIngrediant Numbe 3
+      </p>
+      <p>
+        AIngrediant Numbe 4
+      </p>
+      <p>
+        Instruction
+      </p>
+    </div>
+
+  </main>
+
+
+  <footer>
+    <div class="copyright">
+      Copyright &copy; 2016 Oregon State Univeristy CS 290
+    </div>
+  </footer>
+
+</body>
+
+
+<script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="index.js"></script>
+
+</html>'
+	}
+}
 // Helper to read a stream into a string
 function stream2str(stream, callback) {
 	let str = "";
