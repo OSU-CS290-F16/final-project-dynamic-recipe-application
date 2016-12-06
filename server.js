@@ -155,36 +155,26 @@ function indexDocument(response, error = false){
   </header>
 
   <main>
+	`
+	var collection = db.collection('recipies');
+	var cursor = collection.find({});
+	cursor.each(function(err, doc){
+	`
+      <div class="Recipe">
+      <h1>Recipe Name</h1>
 
-
-    `var collection = db.collection('recipies');
-     var cursor = collection.find({ _id:* });
+    `collection = db.collection('recipies');
+     cursor = collection.find({ "_id": false "ingredient":true });
      cursor.each(function(err, doc){
-          if(err){
-				   
-	  }
+       `<p>` {} `</p>`   
      }); 
 				   
      `
-    <div class="Recipe">
-      <h1>Recipe Name</h1>
-      <p>
-        Ingrediant Number 1
-      </p>
-      <p>
-        Ingrediant Numbe 2
-      </p>
-      <p>
-        AIngrediant Numbe 3
-      </p>
-      <p>
-        AIngrediant Numbe 4
-      </p>
       <p>
         Instruction
       </p>
     </div>
-
+    `});`
   </main>
 
 
