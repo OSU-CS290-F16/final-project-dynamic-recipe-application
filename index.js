@@ -4,7 +4,7 @@ $(function(){
       $(".btn-units:first-child").text($(this).text());
       $(".btn-units:first-child").val($(this).text());
    });
-
+   
 });
 
 
@@ -32,7 +32,7 @@ function addNewIngredient(event) {
         <span class="input-group-addon" id="basic-addon1">Amount</span>\
         <input type="text" class="form-control" placeholder="ex. 5" aria-describedby="basic-addon1" aria-label="...">\
         <div class="input-group-btn">\
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Units <span class="caret"></span></button>\
+          <button type="button" class="btn-units btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Units <span class="caret"></span></button>\
           <ul class="dropdown-menu dropdown-menu-right">\
           <li><a>Teaspoon</a></li> \
           <li><a>Tablespoon</a></li> \
