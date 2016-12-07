@@ -31,7 +31,8 @@ header h1 a:hover {
 nav {
   background-color: #333;
   color: white;
-  margin: 0 -20px;  /* negative margin here makes up for header padding */
+  margin: 0 -20px;
+  /* negative margin here makes up for header padding */
   font-size: 28px;
   font-weight: 200;
 }
@@ -60,6 +61,14 @@ nav {
   float: right;
 }
 
+.Recipe {
+  margin: 20px;
+  padding: 20px;
+  border: 3px solid #333;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
 main {
   display: flex;
   flex-wrap: wrap;
@@ -68,9 +77,7 @@ main {
   background-color: #F2F2F2;
 }
 
-
-
-ooter {
+footer {
   background-color: #333;
   color: white;
 }
@@ -78,7 +85,42 @@ ooter {
 footer .copyright {
   height: 30px;
   line-height: 30px;
-  text-align: center;;
+  text-align: center;
   padding-right: 25px;
   font-weight: 200;
+}
+
+.add-recipe {
+  position: relative;
+  margin: auto;
+  width: 80%;
+  padding: 20px;
+  border: 3px solid #333;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.recipe-header {
+  margin-top: -20px;
+}
+
+.add-btn {
+  margin-top: 20px;
+}
+
+.add-ingredient {
+  margin-top: 20px;
+}
+
+.btn-steelblue {
+  background-color: SteelBlue;
+  color: #fff;
+}
+
+#addIngredient {
+  padding-top: 10px;
+}
+
+.newRowSpace {
+  padding-bottom: 10px;
 }
