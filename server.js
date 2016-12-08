@@ -201,7 +201,7 @@ server.on('request', (req, res) => {
 
 // Connect to the database and start the server
 // Database information
-const DB_USERNAME = "casters",
+const DB_USERNAME = "cs290_casters",
 	DB_USERPASS = "dZDPDyDZcNpzcDh",
 	DB_HOST = "classmongo.engr.oregonstate.edu",
 	DB_PORT = 27017,
