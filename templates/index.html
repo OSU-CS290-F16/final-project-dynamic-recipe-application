@@ -1,65 +1,58 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-  <meta charset="utf-8">
-  <title>Dynamic Recipe Application</title>
-
-  <!-- This is a 3rd-party stylesheet for Font Awesome: http://fontawesome.io/ -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" media="screen">
-
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-
-  <link rel="stylesheet" href="css/style.css" media="screen">
-
+  <meta charset="UTF-8">
+  <title>Recipe Box</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-
   <header>
-
-    <!-- The <i> tag below includes the sticky note icon from Font Awesome -->
-    <h1><a href="index.html"><i class="Header"></i> Dynamic Recipe Application</a></h1>
-
-    <nav>
-      <ul class="navbar-list">
-        <li class="navbar-item"><a href="index.html">Home</a></li>
-        <li class="navbar-item"><a href="add-recipe.html">Add Recipe</a></li>
-        <!--  <li class="navbar-item navbar-right"><a href="#">Maybe Something else</a></li>     -->
+	<h1>Recipe Box</h1>
+	<nav>
+		<a id="add-recipe" href="#">+ Add a Recipe +</a>
+	</nav>
+</header>
+<main>
+  ${recipes.map(recipe => `
+    <section class="recipe" id="${recipe._id}">
+      <header>
+        <h2 class="title">${recipe.title}</h2>
+        <nav>
+          <button class="add-ingredient">Add Ingredient</button>
+          <button class="edit">Edit</button>
+          <button class="delete">Delete</button>
+          <label>Servings:<input class="servings" type="number" name="servings" value="${recipe.servings}"></label>
+        </nav>
+      </header>
+      <ul class="ingredients">
+        ${recipe.ingredients.map(ingredient => `
+          <li>
+            <span>${ingredient.name}</span>
+            <input class="quantity" type="number" disabled="true" step="0.01" value="${ingredient.quantity}"/>
+            <select class="units" disabled="true">
+              <option disabled>Volume</option>
+                <option${ingredient.units == "Cups" ? ' selected':''}>Cups</option>
+                <option${ingredient.units == "Tablespoon" ? ' selected':''}>Tablespoon</option>
+                <option${ingredient.units == "Teaspoon" ? ' selected':''}>Teaspoon</option>
+              <option disabled>Weight</option>
+                <option${ingredient.units == "Pound" ? ' selected':''}>Pound</option>
+              <option disabled>Fluid</option>
+                <option${ingredient.units == "Ounce" ? ' selected':''}>Ounce</option>
+                <option${ingredient.units == "Pint" ? ' selected':''}>Pint</option>
+                <option${ingredient.units == "Quart" ? ' selected':''}>Quart</option>
+                <option${ingredient.units == "Gallon" ? ' selected':''}>Gallon</option>
+              <option disabled>Misc.</option>
+                <option${ingredient.units == "Unitless" ? ' selected':''}>Unitless</option>
+            </select>
+          </li>
+          `).join('')}
       </ul>
-    </nav>
+      <p class="details">This is the recipe's instructions.  They are probably pretty long and have lots of intricate details.  Yea, more power to you instructions.</p>
+    </section>
+    `).join('')}
+</main>
 
-  </header>
-
-  <main>
-
-
-
-    <div class="Recipe">
-      <h1>Recipe Name</h1>
-      <h2><a href="recipe-display.html">Details</a></h2>
-    </div>
-
-  </main>
-
-
-  <footer>
-    <div class="copyright">
-      Copyright &copy; 2016 Oregon State Univeristy CS 290
-    </div>
-  </footer>
-
+<script src="/js/index.js"></script>
 </body>
-
-
-<script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<script src="js/index.js"></script>
-
 </html>
