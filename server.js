@@ -26,7 +26,7 @@ const tables = {};
 const sessions = {};
 
 // Port to listen on
-const PORT = process.env.port || 80;
+const PORT = process.env.port || 3000;
 
 // Handle displaying common errors.
 function errorDocument(response, error) {
@@ -39,7 +39,7 @@ function errorDocument(response, error) {
 		);
 	}
 }
-function indexDocument(response){
+function indexDocument(response, error){
 	response.writeHead(200, 'All good', {});
 	response.end(
 		eval(templates['index'])
@@ -161,7 +161,7 @@ let patterns = [
 			/\//
 		],
 		handler: function(req, res, params) {
-			indexDocument();
+			indexDocument(res);
 		}
 	}
 ];
@@ -195,7 +195,7 @@ server.on('request', (req, res) => {
 		}
 	}
 	// If no handler is found, then we will use our default
-	console.error(`Url ${req.url} and method ${req.method} doesn't have a route handler`);
+	console.error(`Url ${req.url} and method ${req.method} doesnt have a route handler`);
 	errorDocument(res, 404);
 });
 
@@ -216,7 +216,7 @@ mongodb.MongoClient.connect(mongoUrl, (err, mongoDb) => {
 		console.log(`Connected to the database`);
 	}
 	db = mongoDb;
-	recipes = db.getCollection('recipes');
+	recipes = db.collection('recipes');
 	server.listen(PORT);
 	console.log(`Server listening on ${PORT}`);
 });
