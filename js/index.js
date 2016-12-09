@@ -7,10 +7,15 @@ $(function(){
 
 });
 
-
-var addIngredient = document.getElementById('addButton');
-addIngredient.addEventListener('click', addNewIngredient);
-
+window.onload = function(){
+	var location = window.location.pathname.split('/');
+	if(location[location.length-2] == "add"){
+		var addIngredient = document.getElementById('addButton');
+		addIngredient.addEventListener('click', addNewIngredient);
+	} else if (location.length==2){
+		addRecipeSummary();
+	}
+}
 
 
 
@@ -48,4 +53,30 @@ function addNewIngredient(event) {
     currentIngredient.appendChild(newIngredient);
 }
 
+function addRecipeSummary(){
+	
+	var size = 0; //will be # of entries in collection
+	var ingsize  = 0 //will be # of ingredients in recipe
+	var secret = document.getElementById('secretdiv');
+	var newRecipe = document.createElement('div');
+	var newHeader = document.createElement('h1');
+	var newIng = document.createElement('p');
+	var recipeName = 'mongo info here';
+	var ingName = 'alsomongo';
+	for(var a = 0; a<size; a++){
+		newRecipe = document.createElement('div');
+		newHeader = document.createElement('h1');
+		recipeName = 'mongo info again';
+		newHeader.innerHTML = recipeName
+		newRecipe.appendChild(newHeader);
+		ingSize = 0 
+		for(var b = 0; b<ingSize; b++){
+			newIng = document.createElement('p');
+			ingName = 'mongo info again';
+			newIng.innerHTML = ingName;
+			newRecipe.appendChild(newIng);
+		}
+		secret.appendChild(newRecipe);
+	}
+}
 console.log("I work!");
