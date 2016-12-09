@@ -1,126 +1,108 @@
-body {
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  margin: 0;
+/* - Reset - */
+body{
+	margin: 0;
+	background-color: #eee;
+	font-family: sans-serif;
+	color: #333;
+}
+a{
+	font-weight: bold;
+	text-decoration: none;
+	color: #1d70a2;
+}
+h1, h2, h3, h4, h5, h6{
+	margin: 0;
 }
 
-a {
-  text-decoration: none;
+/* - Header - */
+body > header{
+	background-color: #fff;
+	box-shadow: #aaa 0 3px 5px;
+	color: #a0dd1c;
+}
+header > h1{
+	text-align: center;
+	padding-top: 20px;
+	text-shadow: 0 0 3px #eee;
+}
+nav{
+
+}
+header a{
+	color: inherit;
+}
+nav a{
+	-webkit-transition: all .3s;
+	transition: all .3s;
+	display: inline-block;
+	padding: 10px;
+	border: 1px transparent solid;
+}
+nav a:hover {
+	border-color: #efefef;
 }
 
-header {
-  background-color: SteelBlue;
-  padding: 5px 20px 0 5px;
+/* - Main Content - */
+main{
+	padding: 10px 40px;
 }
 
-header h1 {
-  display: inline-block;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  font-size: 72px;
-  font-weight: 200;
-  margin: 5px 20px;
+/* - Recipe - */
+section > header{
+	border-bottom: 1px solid #ccc;
+}
+section nav{
+	float: right;
+}
+section header:after{
+	clear: both;
+	display: block;
+	content: "";
+}
+section h2{
+	float: left;
+}
+section{
+	margin: 10px auto;
+	padding: 10px;
+	background-color: #fff;
+	border: #ccc solid 1px;
+	-webkit-transform: rotateX(5deg);
+	        transform: rotateX(5deg);
+	box-shadow: 0 0 3px #ccc;
+}
+.ingredients{
+	padding-left: 10px;
+}
+.ingredients:first-child{
+	border-left: none;
+	margin-left: 0;
+}
+.ingredients li{
+	margin: 5px;
+	margin-right: 0;
+	padding-left: 5px;
 }
 
-header h1 a {
-  color: inherit;
+.quantity, .units{
+	margin-left: 5px;
+}
+/* I'm using disabled options as labels: http://stackoverflow.com/questions/899148/html-select-option-separator */
+.units option[disabled]{
+	color: #a0dd1c;
+	font-weight: bold;
+}
+.quantity, .servings{
+	width: 3em;
 }
 
-header h1 a:hover {
-  text-decoration: none;
+/* - Edit Mode - */
+.add-ingredient{
+	visibility: hidden;
 }
-
-nav {
-  background-color: #333;
-  color: white;
-  margin: 0 -20px;
-  /* negative margin here makes up for header padding */
-  font-size: 28px;
-  font-weight: 200;
+.edit-mode .add-ingredient{
+	visibility: visible;
 }
-
-.navbar-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0 20px;
-}
-
-.navbar-item {
-  display: inline;
-}
-
-.navbar-item a {
-  display: inline-block;
-  padding: 10px 20px;
-  color: white;
-}
-
-.navbar-item a:hover {
-  background-color: #444;
-}
-
-.navbar-right {
-  float: right;
-}
-
-.Recipe {
-  margin: 20px;
-  padding: 20px;
-  border: 3px solid #333;
-  border-radius: 10px;
-  background-color: #fff;
-}
-
-main {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 20px 20px 400px 20px;
-  min-height: 400px;
-  background-color: #F2F2F2;
-}
-
-footer {
-  background-color: #333;
-  color: white;
-}
-
-footer .copyright {
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  padding-right: 25px;
-  font-weight: 200;
-}
-
-.add-recipe {
-  position: relative;
-  margin: auto;
-  width: 80%;
-  padding: 20px;
-  border: 3px solid #333;
-  border-radius: 10px;
-  background-color: #fff;
-}
-
-.recipe-header {
-  margin-top: -20px;
-}
-
-.add-btn {
-  margin-top: 20px;
-}
-
-.add-ingredient {
-  margin-top: 20px;
-}
-
-.btn-steelblue {
-  background-color: SteelBlue;
-  color: #fff;
-}
-
-#addIngredient {
-  padding-top: 10px;
-}
-
-.newRowSpace {
-  padding-bottom: 10px;
+[contentEditable]{
+	border: 1px solid #ffcd99;
 }

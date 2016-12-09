@@ -12,7 +12,7 @@ let db, recipes;
 
 // Load the templates
 const templates = {};
-['add-recipe', 'index', 'recipe-display', '404'].forEach(name => {
+['index', '404'].forEach(name => {
 	// We are turning the html files into a str we can eval as a template
 	let tmplstr = '`' + fs.readFileSync(`templates/${name}.html`).toString() + '`';
 	templates[name] = tmplstr;
@@ -40,23 +40,38 @@ function errorDocument(response, error) {
 	}
 }
 function indexDocument(response){
-	response.writeHead(200, 'All good', {});
-	response.end(
-		eval(templates['index'])
-	);
+	recipes.find({}, (error, cursor) => {
+		if (error){
+			console.error(new Error(error));
+		}
+		cursor.toArray((error, recipes) => {
+			if (error) {
+				console.error(new Error(error));
+			}
+			// template index uses: recipes
+			response.writeHead(200, 'All good', {});
+			response.end(
+				eval(templates['index'])
+			);
+		});
+	})
 }
-function recipeAddDocument(response, error = false ){
-	response.writeHead(200, 'All good', {});
-	response.end(
-		eval(templates['add-recipe'])
-	);
-}
-function recipeDisplayDocument(response, id){
-	response.writeHead(200, 'All good', {});
-	response.end(
-		eval(templates['recipe-display'])
-	);
-}
+// function recipeAddDocument(response, error = false ){
+// 	response.writeHead(200, 'All good', {});
+// 	response.end(
+// 		eval(templates['add-recipe'])
+// 	);
+// }
+// function recipeDisplayDocument(response, id){
+// 	recipesCollection.find({'id': id}, (error, cursor) => {
+// 		cursor.forEach((recipe) => {
+// 			response.writeHead(200, 'All good', {});
+// 			response.end(
+// 				eval(templates['recipe-display'])
+// 			);
+// 		})
+// 	});
+// }
 
 // Helper to read a stream into a string
 function stream2str(stream, callback) {
@@ -108,49 +123,71 @@ let patterns = [
 			}
 		}
 	},
-	{
-		// Add recipe page
-		methods: ["get"],
-		regex: [
-			/\/recipes\/add\//
-		],
-		handler: function(req, res, params) {
-			recipeAddDocument(res);
-		}
-	},
+	// {
+	// 	// Add recipe page
+	// 	methods: ["get"],
+	// 	regex: [
+	// 		/\/recipes\/add\//
+	// 	],
+	// 	handler: function(req, res, params) {
+	// 		recipeAddDocument(res);
+	// 	}
+	// },
 	{
 		// Recipe pages
 		methods: ["get"],
 		regex: [
-			/\/recipes\/(.+)*/
+			/\/recipes\//
 		],
 		handler: function(req, res, params) {
 			let [match, id] = params;
-			if (id) {
-				recipeDisplayDocument(res, id);
-			} else {
-				indexDocument(res);
-			}
+			indexDocument(res);
 		}
 	},
 	{
 		// Rest Api endpoint
 		methods: ["get", "post", "put", "delete"],
 		regex: [
-			/\/api\/recipes\/(.+)/ // No camptures because we will be parsing it ourselves in the handler.
+			/\/api\/recipes\//
 		],
 		handler: function(req, res, params) {
 			// Decrease the number of toLowerCase() statements
 			req.method = req.method.toLowerCase();
-
 			if (req.method == "get") {
+				// This would be if I was requesting recipes over ajax later on.
 
+				// recipesCollection.find({'id': data.id}, (error, cursor) => {
+				// 	cursor.forEach(document => {
+				// 		res.writeHead(200, "Successfully returning recipe", {});
+				// 		res.end(JSON.stringify(document));
+				// 	})
+				// });
 			} else if (req.method == "post") {
-
+				stream2str(req, (str) => {
+					let data = JSON.parse(str);
+					if (data.id == "create") {
+						delete data.id;
+						data._id = mongodb.ObjectId();
+						recipes.insert(data);
+						res.writeHead(200, "Inserted Successfully", {});
+						res.end();
+					} else {
+						data._id = data.id;
+						delete data.id;
+						recipes.update({'id': data.id}, data);
+						res.writeHead(200, "Updated Successfully", {});
+						res.end();
+					}
+				});
 			} else if (req.method == "put") {
-
+				console.error("Updating a recipe is not implemented.");
 			} else { // Method = delete
-
+				stream2str(req, (str) => {
+					let data = JSON.parse(str);
+					recipes.remove({_id: data.id});
+					res.writeHead(200, "ok", {});
+					res.end();
+				});
 			}
 		}
 	},
@@ -161,7 +198,7 @@ let patterns = [
 			/\//
 		],
 		handler: function(req, res, params) {
-			indexDocument();
+			indexDocument(res);
 		}
 	}
 ];
@@ -201,13 +238,15 @@ server.on('request', (req, res) => {
 
 // Connect to the database and start the server
 // Database information
-const DB_USERNAME = "casters",
+const DB_USERNAME = "cs290_casters",
 	DB_USERPASS = "dZDPDyDZcNpzcDh",
 	DB_HOST = "classmongo.engr.oregonstate.edu",
 	DB_PORT = 27017,
 	DB_NAME = "cs290_casters";
 
-const mongoUrl = `mongodb://${DB_USERNAME}:${DB_USERPASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+const mongoUrl = `mongodb://${DB_USERNAME ?
+		`${DB_USERNAME}:${DB_USERPASS}@` : ''
+	}${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 mongodb.MongoClient.connect(mongoUrl, (err, mongoDb) => {
 	if (err){
 		console.error(`Unable to connect to the database because ${err}`);
@@ -216,7 +255,7 @@ mongodb.MongoClient.connect(mongoUrl, (err, mongoDb) => {
 		console.log(`Connected to the database`);
 	}
 	db = mongoDb;
-	recipes = db.getCollection('recipes');
+	recipes = db.collection('recipes');
 	server.listen(PORT);
 	console.log(`Server listening on ${PORT}`);
 });
