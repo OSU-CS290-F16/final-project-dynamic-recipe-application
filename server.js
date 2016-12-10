@@ -165,28 +165,27 @@ let patterns = [
 			} else if (req.method == "post") {
 				stream2str(req, (str) => {
 					let data = JSON.parse(str);
-					if (data.id == "create") {
-						delete data.id;
-						data._id = mongodb.ObjectId();
-						recipes.insert(data);
-						res.writeHead(200, "Inserted Successfully", {});
-						res.end();
-					} else {
-						data._id = data.id;
-						delete data.id;
-						recipes.update({'id': data.id}, data);
-						res.writeHead(200, "Updated Successfully", {});
-						res.end();
-					}
+					data._id = mongodb.ObjectId();
+					recipes.insert(data);
+					res.writeHead(200, "Inserted Successfully", {});
+					res.end(JSON.stringify(data));
 				});
 			} else if (req.method == "put") {
-				console.error("Updating a recipe is not implemented.");
+				stream2str(req, (str) => {
+					let data = JSON.parse(str);
+					data._id = mongodb.ObjectId(data._id);
+					recipes.update({'_id': data._id}, data).then(result => {
+						res.writeHead(200, "Updated Successfully", {});
+						res.end(str);
+					});
+				});
 			} else { // Method = delete
 				stream2str(req, (str) => {
 					let data = JSON.parse(str);
-					recipes.remove({_id: data.id});
-					res.writeHead(200, "ok", {});
-					res.end();
+					recipes.remove({"_id": mongodb.ObjectId(data._id)}).then(results => {
+						res.writeHead(200, "ok", {});
+						res.end("{}");
+					});
 				});
 			}
 		}
@@ -243,6 +242,11 @@ const DB_USERNAME = "cs290_casters",
 	DB_HOST = "classmongo.engr.oregonstate.edu",
 	DB_PORT = 27017,
 	DB_NAME = "cs290_casters";
+
+// const DB_USERNAME = false,
+// 	DB_HOST = "localhost",
+// 	DB_PORT = 27017,
+// 	DB_NAME = "cs290fp";
 
 const mongoUrl = `mongodb://${DB_USERNAME ?
 		`${DB_USERNAME}:${DB_USERPASS}@` : ''
