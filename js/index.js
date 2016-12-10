@@ -39,7 +39,7 @@ function deleteRecipe(recipeElement) {
 	xhr.onload = (response) => {
 		recipeElement.remove();
 	};
-	xhr.send(JSON.stringify({'id': recipeElement.id}));
+	xhr.send(JSON.stringify({'_id': recipeElement.id}));
 }
 function updateProportions(recipeElement) {
 	// Not implemented yet.
@@ -64,10 +64,11 @@ function updateRecipe(recipeElement) { // Used when clicking Done
 			};
 		})
 	};
+	console.log(data);
 	// This is the database stuff:
 	let xhr = new XMLHttpRequest();
 	if (recipeElement.id) {
-		xhr.open('put', '/api/recipes');
+		xhr.open('put', '/api/recipes/');
 	} else {
 		xhr.open('post', '/api/recipes/');
 	}
